@@ -1,0 +1,6 @@
+key.yaml
+.idea/
+/dist
+venv/
+
+.DS_Store
