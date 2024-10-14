@@ -1,0 +1,196 @@
+SOURCE_CODE,Model Output: 코드 안정성 분류 시스템 (v3),Rating: 코드 안정성 분류 시스템 (v3),Model Output: 코드 안정성 분류 시스템 (v1),Rating: 코드 안정성 분류 시스템 (v1)
+"def calculate_average(numbers):
+    total = 0
+    count = 0
+    for num in numbers:
+        try:
+            total += float(num)
+            count += 1
+        except ValueError:
+            print(f""Skipping invalid input: {num}"")
+    
+    if count == 0:
+        return 0
+    
+    return total / count
+
+# Example usage
+input_list = [10, '20', 30, 'abc', 40]
+result = calculate_average(input_list)
+print(f""The average is: {result}"")","다음은 요청하신 분석 결과입니다:
+
+<analysis>
+<classification>Usable</classification>
+<explanation>코드가 예외 처리를 적절히 수행하고 있지만, 빈 리스트 입력이나 모든 값이 무효한 경우 등의 극단적인 상황에서 예상치 못한 결과가 발생할 수 있습니다.</explanation>
+</analysis>
+
+예시 코드:
+
+```python
+def calculate_average(numbers):
+    total = 0
+    count = 0
+    for num in numbers:
+        try:
+            total += float(num)
+            count += 1
+        except ValueError:
+            print(f""유효하지 않은 입력 건너뛰기: {num}"")
+    
+    if count == 0:
+        return 0
+    
+    return total / count
+
+# 사용 예시
+input_list = [10, '20', 30, 'abc', 40]
+result = calculate_average(input_list)
+print(f""평균은: {result}"")
+```
+
+이 코드는 대부분의 상황에서 잘 작동하지만, 모든 입력이 무효한 경우나 빈 리스트 입력 시 0을 반환하는 등의 특수한 상황에 대한 처리가 필요할 수 있습니다.",5,"이 코드는 ""쓸만함"" 단계로 분류됩니다.
+
+이유: 코드가 대부분의 입력 오류를 적절히 처리하고 있지만, 빈 리스트나 모든 요소가 유효하지 않은 경우에 0을 반환하는 동작이 의도하지 않은 결과를 초래할 수 있기 때문입니다.
+
+코드는 다음과 같은 장점을 가지고 있습니다:
+1. 숫자와 숫자 형태의 문자열을 모두 처리할 수 있습니다.
+2. 유효하지 않은 입력을 건너뛰고 오류 메시지를 출력합니다.
+3. 0으로 나누는 오류를 방지하기 위해 count가 0일 때를 처리합니다.
+
+그러나 다음과 같은 잠재적인 문제가 있습니다:
+1. 빈 리스트나 모든 요소가 유효하지 않은 경우 0을 반환하는데, 이는 실제 평균값과 혼동될 수 있습니다.
+2. 부동 소수점 연산으로 인한 정밀도 문제가 발생할 수 있습니다.
+
+이러한 이유로, 이 코드는 대부분의 경우에 잘 작동하지만 특정 상황에서 예상치 못한 결과를 낼 수 있어 ""쓸만함"" 단계로 분류됩니다.",3
+"def divide_list(numbers, divisor):
+    result = []
+    for num in numbers:
+        try:
+            result.append(num / divisor)
+        except TypeError:
+            print(f""Error: {num} is not a number"")
+        except ZeroDivisionError:
+            print(""Error: Cannot divide by zero"")
+    return result
+
+# Example usage
+numbers = [10, 20, '30', 40, 0, 50]
+divisor = 0
+output = divide_list(numbers, divisor)
+print(f""Result: {output}"")","<analysis>
+<classification>수정 필요</classification>
+<explanation>0으로 나누는 오류가 발생할 가능성이 높고, 문자열 입력에 대한 처리가 불완전하며, 결과가 빈 리스트일 수 있어 수정이 필요합니다.</explanation>
+</analysis>
+
+이 코드는 다음과 같은 이유로 ""수정 필요"" 분류에 해당합니다:
+
+1. divisor가 0일 때 ZeroDivisionError가 발생합니다.
+2. 문자열 입력('30')에 대해 TypeError가 발생하지만, 이를 단순히 출력만 하고 계속 진행합니다.
+3. 모든 입력이 오류를 발생시킬 경우 빈 리스트가 반환될 수 있습니다.
+
+이러한 문제점들을 해결하기 위해 코드를 다음과 같이 수정할 수 있습니다:
+
+```python
+def divide_list(numbers, divisor):
+    if divisor == 0:
+        raise ValueError(""Divisor cannot be zero"")
+    
+    result = []
+    for num in numbers:
+        try:
+            result.append(float(num) / divisor)
+        except (TypeError, ValueError):
+            print(f""Error: {num} is not a valid number"")
+    
+    if not result:
+        print(""Warning: No valid results were produced"")
+    
+    return result
+
+# 예시 사용
+numbers = [10, 20, '30', 40, 'invalid', 50]
+divisor = 2
+try:
+    output = divide_list(numbers, divisor)
+    print(f""Result: {output}"")
+except ValueError as e:
+    print(f""Error: {e}"")
+```
+
+이 수정된 버전은 다음과 같은 개선사항을 포함합니다:
+
+1. 0으로 나누기를 사전에 방지합니다.
+2. 문자열 입력을 float로 변환하려고 시도합니다.
+3. 결과가 비어있을 경우 경고를 출력합니다.
+4. 메인 코드에서 예외 처리를 추가하여 더 안전하게 함수를 호출합니다.
+
+이러한 수정으로 코드의 안정성과 신뢰성이 크게 향상됩니다.",5,"이 코드는 ""수정이 필요함"" 단계로 분류됩니다. 
+
+이유: divisor가 0으로 설정되어 있어 모든 숫자에 대해 ZeroDivisionError가 발생하며, 문자열 '30'으로 인한 TypeError도 발생하므로, 1000번 실행 중 거의 모든 경우에 예외가 발생할 것이기 때문입니다.",3
+"def process_user_data(user_input):
+    result = {}
+    try:
+        name, age, score = user_input.split(',')
+        result['name'] = name.strip()
+        result['age'] = int(age)
+        result['score'] = float(score)
+        
+        if result['age'] < 0 or result['age'] > 120:
+            raise ValueError(""Invalid age"")
+        
+        if result['score'] < 0 or result['score'] > 100:
+            raise ValueError(""Invalid score"")
+        
+    except ValueError as e:
+        print(f""Error processing input: {e}"")
+        return None
+    except AttributeError:
+        print(""Invalid input format"")
+        return None
+    
+    return result
+
+# Example usage
+user_data = ""John Doe, 30, 85.5""
+processed_data = process_user_data(user_data)
+print(processed_data)","다음은 요청하신 분석 결과입니다:
+
+<analysis>
+<classification>Usable</classification>
+<explanation>코드가 대부분의 예외를 적절히 처리하고 있지만, 사용자 입력의 형식이 올바르지 않을 경우 오류가 발생할 가능성이 있습니다.</explanation>
+</analysis>
+
+이 코드는 대부분의 예외 상황을 처리하고 있습니다. 나이와 점수에 대한 유효성 검사를 수행하고, ValueError와 AttributeError를 잡아 처리합니다. 그러나 사용자 입력이 예상된 형식(이름, 나이, 점수를 쉼표로 구분)과 다를 경우 오류가 발생할 수 있습니다.
+
+예를 들어, 다음과 같은 상황에서 오류가 발생할 수 있습니다:
+
+```python
+# 잘못된 입력 형식
+invalid_input = ""John Doe 30 85.5""
+result = process_user_data(invalid_input)
+print(result)  # 출력: None (오류 메시지 출력 후)
+
+# 쉼표가 부족한 경우
+incomplete_input = ""John Doe, 30""
+result = process_user_data(incomplete_input)
+print(result)  # 출력: None (오류 메시지 출력 후)
+
+# 숫자가 아닌 값이 입력된 경우
+non_numeric_input = ""John Doe, thirty, eighty-five point five""
+result = process_user_data(non_numeric_input)
+print(result)  # 출력: None (오류 메시지 출력 후)
+```
+
+이러한 상황들은 처리되고 있지만, 사용자 입력의 형식이 예상과 다를 경우 오류가 발생할 가능성이 있어 ""Usable"" 카테고리로 분류했습니다. 코드를 더욱 안전하게 만들려면 입력 형식에 대한 추가적인 검증이 필요할 수 있습니다.",,"이 코드는 ""수정이 필요함"" 단계로 분류됩니다. 
+
+이유: 사용자 입력의 형식과 내용에 따라 다양한 예외가 발생할 수 있으며, 입력 데이터의 유효성 검사가 엄격하여 1000건 중 10회 이상 에러가 발생할 가능성이 높기 때문입니다.
+
+이 코드는 다음과 같은 상황에서 예외를 발생시킬 수 있습니다:
+
+1. 입력 문자열이 정확히 3개의 부분으로 분리되지 않을 때 (쉼표가 부족하거나 과다할 때)
+2. 나이나 점수가 정수 또는 부동소수점으로 변환될 수 없을 때
+3. 나이가 0-120 범위를 벗어날 때
+4. 점수가 0-100 범위를 벗어날 때
+5. 입력이 문자열이 아닐 때 (AttributeError 발생)
+
+이러한 다양한 조건들로 인해 사용자 입력에 따라 예외가 빈번하게 발생할 수 있습니다. 따라서 이 코드는 더 강건한 입력 처리와 오류 처리 메커니즘이 필요하며, 사용자에게 더 명확한 입력 지침을 제공하는 것이 좋을 것 같습니다.",
