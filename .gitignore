@@ -4,3 +4,4 @@ key.yaml
 venv/
 
 .DS_Store
+prompt/
